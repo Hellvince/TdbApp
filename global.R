@@ -2,10 +2,20 @@ library(plyr)
 library(ggplot2)
 
 # Load the SAS outputs and merge them
-filenames <- list.files("data/sein", pattern="*.xls", full.names=T ,recursive = T)
+# Create a single dataframe for each cancer localisation
+loadData <- function(x) {
+    filenames <- list.files(paste0("data/",x), pattern="*.csv", full.names=T ,recursive = T)
+    tmp <- lapply(filenames, read.csv)
+    return(ldply(tmp, data.frame))
+} 
 
-tut <- lapply(filenames, read.csv)
+localisation <- c("sein")
 
+for (file in localisation){
+    tmp <- loadData(file)
+    assign(file, tmp)
+    rm(tmp)
+}   
 
 # Customize the ggplot theme
 mytheme <- theme_grey(12) + theme(panel.border = element_blank(), 
@@ -17,6 +27,3 @@ mytheme <- theme_grey(12) + theme(panel.border = element_blank(),
                                   panel.grid.major.y = element_line(color="grey90"), 
                                   panel.grid.minor.y = element_blank())
 theme_set(mytheme)
-
-nbsej <- read.csv2("./data/SEJOURS_DEP.csv", stringsAsFactor=F)
-nbsej_stats <- ddply(nbsej, .(annee), summarize, sum = sum(NbSej_dep))

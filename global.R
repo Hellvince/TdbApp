@@ -5,7 +5,7 @@ library(ggplot2)
 # Create a single dataframe for each cancer localisation
 loadData <- function(x) {
     filenames <- list.files(paste0("data/",x), pattern="*.csv", full.names=T ,recursive = T)
-    tmp <- lapply(filenames, read.csv)
+    tmp <- lapply(filenames, function (x) read.csv(x, stringsAsFactor=F))
     return(ldply(tmp, data.frame))
 } 
 

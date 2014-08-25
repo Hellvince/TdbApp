@@ -1,24 +1,49 @@
+################################################################################
+##
+##      Title   : server.R (part of the Shiny application called TdbApp)
+##      Author  : Vincent Canuel
+##      Date    :
+##
+##
+################################################################################
+
+################################################################################
+##
+##      Main parameters
+##
+################################################################################
+# Loading required packages
+# TO DO : may not be required since we use a global.R file : load them all there ?
 library(shiny)
 library(plyr)
 library(ggplot2)
 
+################################################################################
+##
+##      Processing data
+##
+################################################################################
+
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-    
-    subsetChoice <- reactive({
-        # Get the selected subset
-        return(get(input$subset))
-    })
-    
-    selectedData <- reactive({
-        # Update the selected data using years input
-        return(subset(subsetChoice(), reg_reg = input$region))
-    })
-  
-    output$distPlot <- renderPlot({    
-        # Draw the barplot for the specified years
-        ggplot(selectedData(), aes(x=ETA_NUM, y=Somme_ACT_sein_CCIAbla , fill="red")) +
-            geom_bar(stat="identity") +
-            labs(x = "Année", y="Somme des séjours")
-    })
+        
+        subsetChoice <- reactive({
+                # Get the selected type of cancer
+                return(get(input$subset))
+        })
+        
+        selectedData <- reactive({
+                # Update the selected data
+                return(subset(subsetChoice(), 
+                              reg_reg = input$region,
+                              dep_dep = input$departement,
+                              eta_num = input$eta_num))
+        })
+        
+        output$distPlot <- renderPlot({    
+                # Draw the barplot for the specified years
+                ggplot(selectedData(), aes(x=eta_num, y=somme_act_sein_cciabla , fill="red")) +
+                        geom_bar(stat="identity") +
+                        labs(x = "Année", y="Somme des séjours")
+        })
 })

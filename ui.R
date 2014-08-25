@@ -1,4 +1,26 @@
+################################################################################
+##
+##      Title   : ui.R (part of the Shiny application called TdbApp)
+##      Author  : Vincent Canuel
+##      Date    :
+##
+##
+################################################################################
+
+################################################################################
+##
+##      Main parameters
+##
+################################################################################
+# Loading required packages
+# TO DO : may not be required since we use a global.R file : load them all there ?
 library(shiny)
+
+################################################################################
+##
+##      Creating UI
+##
+################################################################################
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -10,11 +32,25 @@ shinyUI(fluidPage(
   sidebarLayout(
     sidebarPanel(
         
+        h3("Type de cancer"),
+        
         selectInput("subset", "Localisation :",
-                    choices = list("sein", "ccr")),
+                    choices = list("Sien" = "sein",
+                                   "Colon-Rectum" = "ccr")),
+        
+        hr(),
+
+        h3("Filtre des résultats :"),
         
         selectInput("region", "Région :", 
-                    choices = unique(sein$reg_reg))
+                    choices = c("Choisir"='', unique(sein$reg_reg)),
+        
+        selectInput("departement", "Département :", 
+                    choices = c("Choisir"='', unique(sein$dep_dep)),
+        
+        selectInput("eta_num", "Etablissement :", 
+                    choices = c("Choisir"='', unique(sein$eta_num)))
+        
     ),
     
     # Show a plot of the generated distribution

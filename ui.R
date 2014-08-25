@@ -35,7 +35,7 @@ shinyUI(fluidPage(
         h3("Type de cancer"),
         
         selectInput("subset", "Localisation :",
-                    choices = list("Sien" = "sein",
+                    choices = list("Sein" = "sein",
                                    "Colon-Rectum" = "ccr")),
         
         hr(),
@@ -43,13 +43,13 @@ shinyUI(fluidPage(
         h3("Filtre des résultats :"),
         
         selectInput("region", "Région :", 
-                    choices = c("Choisir"='', unique(sein$reg_reg))),
+                    choices = c("Choisir"= 'all', unique(sein$reg_reg))),
         
         selectInput("departement", "Département :", 
-                    choices = c("Choisir"='', unique(sein$dep_dep))),
+                    choices = c("Choisir"= 'all', unique(sein$dep_dep))),
         
         selectInput("eta_num", "Etablissement :", 
-                    choices = c("Choisir"='', unique(sein$eta_num)))
+                    choices = c("Choisir"= 'all', unique(sein$eta_num)))
         
     ),
     
@@ -58,7 +58,7 @@ shinyUI(fluidPage(
       tabsetPanel(
         
         tabPanel('Results',
-                 plotOutput("distPlot")),
+                 tableOutput("table")),
         
         tabPanel('help',
                  h3("This is the future help"))

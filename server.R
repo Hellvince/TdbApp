@@ -27,15 +27,15 @@ library(ggplot2)
 # Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
         
-        subsetChoice <- reactive({
+        datasetChoice <- reactive({
                 # Get the selected type of cancer
-                return(get(input$subset))
+                return(get(input$dataset))
         })
         
         
         selectedData <- reactive({
                 # Update the selected data
-                data <- subsetChoice()
+                data <- datasetChoice()
                 
                 if (input$region != "all") {
                         data <- subset(data, reg_reg == input$region)
@@ -61,7 +61,11 @@ shinyServer(function(input, output, session) {
         })
 
         
-        # Watch the current value of filters and construct the resulting possibilites
+        ########################################################################
+        ##
+        ##      REACTIVE : Watch and update filters value based on selection
+        ##
+        ########################################################################
         regionValues <- reactive({
                 # Watch the value of region
                 if (input$region != "all") {
@@ -134,11 +138,22 @@ shinyServer(function(input, output, session) {
         })
         
         
+        ########################################################################
+        ##
+        ##      REACTIVE : Process the selected data
+        ##
+        ########################################################################
         # Calculate the sum of each variable
         sommeData <- reactive({
                 as.data.frame(lapply(selectedData()[,-(1:8)], sum))
         })
         
+        
+        ########################################################################
+        ##
+        ##      OUTPUT : Render the values of interest
+        ##
+        ########################################################################
         # Render the output on main panel
         output$table <- renderTable({
                 sommeData()
@@ -150,4 +165,21 @@ shinyServer(function(input, output, session) {
 #                         geom_bar(stat="identity") +
 #                         labs(x = "Année", y="Somme des séjours")
 #         })
+
+        ########################################################################
+        ##
+        ##      OUTUPUT : Buttons to download datasets
+        ##
+        ########################################################################
+
+        output$dl_ori <- downloadHandler(
+                filename = function() {'Original_dataset.csv'},
+                content = function(file) {write.csv(datasetChoice(), file, row.names = F)}
+        )
+
+        output$dl_sel <- downloadHandler(
+                filename = function() {'Selected_dataset.csv'},
+                content = function(file) {write.csv(selectedData(), file, row.names = F)}
+        )
 })
+

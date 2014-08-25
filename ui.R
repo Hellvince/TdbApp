@@ -40,16 +40,27 @@ shinyUI(fluidPage(
         
         hr(),
 
-        h3("Filtre des résultats :"),
+        h3("Filtre des résultats"),
         
-        selectInput("region", "Région :", 
-                    choices = c("Choisir"= 'all', unique(sein$reg_reg))),
         
-        selectInput("departement", "Département :", 
-                    choices = c("Choisir"= 'all', unique(sein$dep_dep))),
+        selectInput("region", "Région :",
+                    choices = c("Choisir"="all", sort(unique(sein$reg_reg)))),
         
-        selectInput("eta_num", "Etablissement :", 
-                    choices = c("Choisir"= 'all', unique(sein$eta_num)))
+        selectInput("departement", "Département :",
+                    choices = c("Choisir"="all", sort(unique(sein$dep_dep)))),
+        
+        selectInput("eta_num", "Numéro FINESS :",
+                    choices = c("Choisir"="all", sort(unique(sein$eta_num)))),
+        
+        selectInput("raison_sociale", "Nom de l'établissement :",
+                    choices = c("Choisir"="all", sort(unique(sein$raison_sociale)))),
+        
+        selectInput("lib_categorie", "Catégorie d'établissement :",
+                    choices = c("Choisir"="all", sort(unique(sein$lib_categorie)))),
+        
+        hr(),
+        
+        HTML("<a class='btn' href='/'>RAZ</a>")
         
     ),
     
@@ -58,7 +69,7 @@ shinyUI(fluidPage(
       tabsetPanel(
         
         tabPanel('Results',
-                 tableOutput("table")),
+                 textOutput("text")),
         
         tabPanel('help',
                  h3("This is the future help"))

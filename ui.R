@@ -88,6 +88,11 @@ shinyUI(navbarPage("Tableau de bord",
                    
                    tabPanel("Aide",
                             h3("Future aide format markdown ?")
-                            )
+                            ),
+                   
+                   navbarMenu("A propos...",
+                              #tabPanel("Des données", includeMarkdown("doc/data.md")),
+                              #tabPanel("De l'INCA", , includeMarkdown("doc/inca.md")),
+                              tabPanel("De l'application", includeMarkdown("doc/app.md"))
+                              )
 ))
-        

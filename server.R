@@ -32,6 +32,7 @@ shinyServer(function(input, output, session) {
                 return(get(input$subset))
         })
         
+        
         selectedData <- reactive({
                 # Update the selected data
                 data <- subsetChoice()
@@ -62,6 +63,7 @@ shinyServer(function(input, output, session) {
         
         # Watch the current value of filters and construct the resulting possibilites
         regionValues <- reactive({
+                # Watch the value of region
                 if (input$region != "all") {
                         return(unique(selectedData()$reg_reg))
                 }else{
@@ -70,6 +72,7 @@ shinyServer(function(input, output, session) {
         })
         
         departementValues <- reactive({
+                # Watch the value of departement
                 if (input$departement != "all"){
                         return(unique(selectedData()$dep_dep))
                 }else{
@@ -78,6 +81,7 @@ shinyServer(function(input, output, session) {
         })
         
         eta_numValues <- reactive({
+                # Watch the value of FINESS
                 if (input$eta_num != "all"){
                         return(unique(selectedData()$eta_num))
                 }else{
@@ -86,6 +90,7 @@ shinyServer(function(input, output, session) {
         })
         
         raisonValues <- reactive({
+                # Watch the value of name
                 if (input$raison_sociale != "all"){
                         return(unique(selectedData()$raison_sociale))
                 }else{
@@ -94,6 +99,7 @@ shinyServer(function(input, output, session) {
         })
         
         categorieValues <- reactive({
+                # Watch the value of type
                 if (input$lib_categorie != "all"){
                         return(unique(selectedData()$lib_categorie))
                 }else{
@@ -128,9 +134,14 @@ shinyServer(function(input, output, session) {
         })
         
         
+        # Calculate the sum of each variable
+        sommeData <- reactive({
+                as.data.frame(lapply(selectedData()[,-(1:8)], sum))
+        })
+        
         # Render the output on main panel
-        output$text <- renderText({
-                selectedData()$eta_num
+        output$table <- renderTable({
+                sommeData()
         })
         
 #         output$distPlot <- renderPlot({    

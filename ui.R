@@ -69,7 +69,7 @@ shinyUI(fluidPage(
       tabsetPanel(
         
         tabPanel('Results',
-                 textOutput("text")),
+                 tableOutput("table")),
         
         tabPanel('help',
                  h3("This is the future help"))

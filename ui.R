@@ -43,10 +43,10 @@ shinyUI(fluidPage(
         h3("Filtre des résultats :"),
         
         selectInput("region", "Région :", 
-                    choices = c("Choisir"='', unique(sein$reg_reg)),
+                    choices = c("Choisir"='', unique(sein$reg_reg))),
         
         selectInput("departement", "Département :", 
-                    choices = c("Choisir"='', unique(sein$dep_dep)),
+                    choices = c("Choisir"='', unique(sein$dep_dep))),
         
         selectInput("eta_num", "Etablissement :", 
                     choices = c("Choisir"='', unique(sein$eta_num)))

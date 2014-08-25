@@ -34,16 +34,28 @@ shinyServer(function(input, output) {
         
         selectedData <- reactive({
                 # Update the selected data
-                return(subset(subsetChoice(), 
-                              reg_reg = input$region,
-                              dep_dep = input$departement,
-                              eta_num = input$eta_num))
+                data <- subsetChoice()
+                if (input$region != "all"){
+                        data <- subset(data, reg_reg == input$region)
+                }
+                if (input$departement != "all"){
+                        data <- subset(data, dep_dep == input$departement)
+                }
+                if (input$eta_num != "all"){
+                        data <- subset(data, eta_num == input$eta_num)
+                }
+                data
         })
         
-        output$distPlot <- renderPlot({    
-                # Draw the barplot for the specified years
-                ggplot(selectedData(), aes(x=eta_num, y=somme_act_sein_cciabla , fill="red")) +
-                        geom_bar(stat="identity") +
-                        labs(x = "Année", y="Somme des séjours")
+        
+        output$table <- renderTable({
+                selectedData()
         })
+        
+#         output$distPlot <- renderPlot({    
+#                 # Draw the barplot for the specified years
+#                 ggplot(selectedData(), aes(x=eta_num, y=somme_act_sein_cciabla , fill="red")) +
+#                         geom_bar(stat="identity") +
+#                         labs(x = "Année", y="Somme des séjours")
+#         })
 })
